@@ -114,6 +114,15 @@
     .install-banner-text small { display: block; font-size: 0.65rem; color: var(--text-mou); font-weight: 400; margin-top: 2px; }
     .install-btn-yes { background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 8px 14px; font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
     .install-close { background: none; border: none; color: var(--text-mou); font-size: 1.1rem; cursor: pointer; padding: 4px; }
+    /* BOUTON ENSTALE VIZIB */
+    .app-install-section { background: linear-gradient(135deg, rgba(255,106,0,0.12), rgba(255,106,0,0.04)); border: 1px solid rgba(255,106,0,0.3); border-radius: 20px; padding: 24px 20px; margin: 0 20px 32px; text-align: center; }
+    .app-install-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .app-install-title { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .app-install-title span { color: var(--oranj); }
+    .app-install-desc { font-size: 0.75rem; color: var(--text-mou); margin-bottom: 16px; line-height: 1.5; }
+    .app-install-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 13px 28px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 24px rgba(255,106,0,0.4); transition: transform 0.2s; }
+    .app-install-btn:hover { transform: translateY(-2px); }
+    .app-install-manual { font-size: 0.68rem; color: var(--text-mou); margin-top: 12px; line-height: 1.6; }
 
     .empty-state { background: var(--nwa2); border: 2px dashed var(--nwa4); border-radius: 18px; padding: 48px 24px; text-align: center; }
     .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
@@ -322,6 +331,23 @@
     <div class="stat"><span class="stat-num">1000+</span><span class="stat-label">Kliyan Satisfè</span><span class="stat-label-fr">Clients satisfaits</span></div>
     <div class="stat"><span class="stat-num">24h</span><span class="stat-label">Livrezon Rapid</span><span class="stat-label-fr">Livraison rapide</span></div>
     <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Kalite Garanti</span><span class="stat-label-fr">Qualité garantie</span></div>
+  </div>
+
+  <!-- APP INSTALL SECTION -->
+  <div class="app-install-section" id="appInstallSection">
+    <div class="app-install-icon">📲</div>
+    <div class="app-install-title">Telechaje <span>Yanou App</span></div>
+    <div class="app-install-desc">
+      Enstale Yanou sou telefòn ou gratis!<br>
+      <em>Installez Yanou sur votre téléphone gratuitement!</em>
+    </div>
+    <button class="app-install-btn" id="appInstallBtn" onclick="installeApp()">
+      📲 Enstale App la Gratis
+    </button>
+    <div class="app-install-manual" id="installManual">
+      <strong>Oswa manyèlman:</strong><br>
+      Chrome ⋮ → "Ajouter à l'écran d'accueil"
+    </div>
   </div>
 
   <!-- CATEGORIES FILTER -->
@@ -566,14 +592,36 @@
       e.preventDefault();
       deferredPrompt = e;
       setTimeout(() => document.getElementById('installBanner').classList.add('show'), 3000);
+      // Montre bouton dirèk
+      document.getElementById('appInstallBtn').style.background = 'var(--oranj)';
+      document.getElementById('installManual').style.display = 'none';
     });
-    document.getElementById('installYes').addEventListener('click', async () => {
-      document.getElementById('installBanner').classList.remove('show');
+
+    async function installeApp() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
+        const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
+        if (outcome === 'accepted') {
+          document.getElementById('appInstallSection').innerHTML = `
+            <div style="font-size:2.5rem">✅</div>
+            <div style="font-size:0.95rem;font-weight:800;margin-top:10px">Yanou enstale! <span style="color:var(--oranj)">Mèsi!</span></div>
+            <div style="font-size:0.75rem;color:var(--text-mou);margin-top:6px">Wè ikonn oranj sou ekran ou 🧡</div>
+          `;
+        }
+      } else {
+        // Si pa gen prompt, montre enstriksyon manyèl
+        alert('📲 Pou enstale Yanou:\n\n1. Klike ⋮ (3 pwen) anlè dwat\n2. Chwazi "Ajouter à l\'écran d\'accueil"\n3. Klike "Ajouter" ✅');
       }
+    }
+
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+
+    document.getElementById('installYes').addEventListener('click', async () => {
+      document.getElementById('installBanner').classList.remove('show');
+      installeApp();
     });
     document.getElementById('installNo').addEventListener('click', () => {
       document.getElementById('installBanner').classList.remove('show');
