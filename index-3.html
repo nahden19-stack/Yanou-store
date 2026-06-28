@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yanou — Tout sa ou bezwen, nan men ou.</title>
+  <!-- PWA -->
+  <meta name="theme-color" content="#FF6A00"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Yanou"/>
+  <meta name="description" content="Marketplace #1 ann Ayiti — Tout sa ou bezwen, nan men ou."/>
+  <link rel="manifest" href="data:application/json;charset=utf-8,{&quot;name&quot;:&quot;Yanou Haiti&quot;,&quot;short_name&quot;:&quot;Yanou&quot;,&quot;description&quot;:&quot;Marketplace #1 ann Ayiti&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23FF6A00&quot;,&quot;orientation&quot;:&quot;portrait&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%23FF6A00'/%3E%3Ctext x='96' y='130' font-size='110' text-anchor='middle' font-family='Arial Black' fill='white'%3EY%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}"/>
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='30' fill='%23FF6A00'/%3E%3Ctext x='90' y='125' font-size='105' text-anchor='middle' font-family='Arial Black' fill='white'%3EY%3C/text%3E%3C/svg%3E"/>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T98X4V5N0S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T98X4V5N0S');
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --oranj: #FF6A00;
+      --nwa: #0a0a0a;
+      --nwa2: #141414;
+      --nwa3: #1e1e1e;
+      --nwa4: #2a2a2a;
+      --blanc: #ffffff;
+      --text-mou: #888888;
+      --text-med: #cccccc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--nwa); color: var(--blanc); overflow-x: hidden; }
+
+    .flash-banner { background: var(--oranj); color: white; text-align: center; padding: 9px 16px; font-size: 0.75rem; font-weight: 700; }
+
+    nav { background: var(--nwa); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--nwa4); position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 38px; height: 38px; background: var(--oranj); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; font-weight: 900; }
+    .logo-text { font-size: 1.4rem; font-weight: 900; }
+    .logo-text span { color: var(--oranj); }
+    .nav-right { display: flex; gap: 10px; align-items: center; }
+    .nav-btn { background: var(--oranj); color: white; padding: 9px 16px; border-radius: 50px; font-weight: 700; font-size: 0.78rem; text-decoration: none; transition: transform 0.2s; }
+    .nav-btn:hover { transform: scale(1.04); }
+    .admin-btn { background: var(--nwa3); border: 1px solid var(--nwa4); color: var(--text-med); padding: 9px 14px; border-radius: 50px; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: border-color 0.2s; }
+    .admin-btn:hover { border-color: var(--oranj); color: var(--oranj); }
+
+    /* ── HERO ── */
+    .hero { background: var(--nwa2); padding: 50px 20px 44px; text-align: center; border-bottom: 1px solid var(--nwa4); position: relative; overflow: hidden; }
+    .hero-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,106,0,0.15) 0%, transparent 70%); pointer-events: none; }
+    .hero-badge { display: inline-block; border: 1px solid var(--oranj); color: var(--oranj); font-size: 0.7rem; font-weight: 700; padding: 5px 14px; border-radius: 50px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero h1 { font-size: clamp(2.2rem, 9vw, 3.5rem); font-weight: 900; line-height: 1.05; margin-bottom: 10px; }
+    .hero h1 .oranj { color: var(--oranj); }
+    .hero-sub { font-size: 0.9rem; color: var(--text-mou); margin-bottom: 6px; }
+    .hero-sub-fr { font-size: 0.8rem; color: #555; font-style: italic; margin-bottom: 30px; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-orange { background: var(--oranj); color: white; padding: 14px 26px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; text-decoration: none; box-shadow: 0 6px 24px rgba(255,106,0,0.45); transition: transform 0.2s; }
+    .btn-orange:hover { transform: translateY(-2px); }
+    .btn-ghost { border: 1px solid var(--nwa4); color: var(--text-med); padding: 14px 26px; border-radius: 50px; font-weight: 600; font-size: 0.88rem; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-ghost:hover { border-color: var(--oranj); color: var(--oranj); }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--nwa4); }
+    .stat { padding: 22px 10px; text-align: center; border-right: 1px solid var(--nwa4); }
+    .stat:last-child { border-right: none; }
+    .stat-num { display: block; font-size: 1.6rem; font-weight: 900; color: var(--oranj); }
+    .stat-label { font-size: 0.65rem; color: var(--text-mou); }
+    .stat-label-fr { font-size: 0.6rem; color: #444; font-style: italic; }
+
+    /* ── SECTION ── */
+    .section { padding: 32px 20px; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .section-head h2 { font-size: 1.1rem; font-weight: 800; }
+    .section-head h2 span { color: var(--oranj); }
+    .section-head h2 small { display: block; font-size: 0.65rem; font-weight: 400; color: var(--text-mou); font-style: italic; }
+
+    /* ── CATEGORIES ── */
+    .categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .cat-card { background: var(--nwa3); border-radius: 14px; padding: 16px 6px; text-align: center; text-decoration: none; color: var(--blanc); border: 1px solid var(--nwa4); transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
+    .cat-card:hover, .cat-card.active { border-color: var(--oranj); transform: translateY(-3px); }
+    .cat-card.active { background: rgba(255,106,0,0.1); }
+    .cat-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .cat-name { font-size: 0.62rem; font-weight: 600; color: var(--text-med); }
+
+    /* ── PRODUITS GRID ── */
+    .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .prod-card { background: var(--nwa2); border-radius: 16px; overflow: hidden; border: 1px solid var(--nwa4); transition: border-color 0.2s, transform 0.2s; position: relative; }
+    .prod-card:hover { border-color: var(--oranj); transform: translateY(-3px); }
+    .prod-img { background: var(--nwa3); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
+    .prod-img img { width: 100%; height: 100%; object-fit: contain; object-position: center; background: #fff; }
+    .prod-badge { position: absolute; top: 8px; left: 8px; background: var(--oranj); color: white; font-size: 0.58rem; font-weight: 700; padding: 3px 8px; border-radius: 50px; }
+    .prod-info { padding: 10px 12px; }
+    .prod-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 2px; }
+    .prod-cat { font-size: 0.62rem; color: var(--text-mou); margin-bottom: 4px; }
+    .prod-price { font-size: 1rem; font-weight: 800; color: var(--oranj); }
+    .prod-price-old { font-size: 0.7rem; color: #555; text-decoration: line-through; margin-left: 4px; }
+    .prod-btn { display: block; background: var(--oranj); color: white; text-align: center; padding: 10px; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: background 0.2s; border: none; width: 100%; cursor: pointer; font-family: 'Poppins', sans-serif; }
+    .prod-btn:hover { background: #e55a00; }
+    .prod-delete { position: absolute; top: 8px; right: 8px; background: rgba(220,38,38,0.85); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-size: 0.7rem; cursor: pointer; display: none; align-items: center; justify-content: center; font-weight: 700; }
+    .prod-soldout-btn { position: absolute; top: 8px; left: 8px; background: rgba(251,191,36,0.9); color: #000; border: none; border-radius: 50px; padding: 3px 8px; font-size: 0.58rem; font-weight: 800; cursor: pointer; display: none; }
+    .sold-out-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; }
+    .sold-out-tag { background: #ef4444; color: white; font-size: 0.75rem; font-weight: 900; padding: 6px 14px; border-radius: 50px; letter-spacing: 1px; transform: rotate(-10deg); }
+    .prod-card.fini { opacity: 0.7; }
+    .prod-card.fini .prod-btn { background: #333; cursor: not-allowed; }
+    /* INSTALL BANNER */
+    .install-banner { display: none; position: fixed; bottom: 80px; left: 12px; right: 12px; background: var(--nwa2); border: 1px solid var(--oranj); border-radius: 16px; padding: 14px 16px; z-index: 300; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+    .install-banner.show { display: flex; align-items: center; gap: 12px; }
+    .install-banner-text { flex: 1; font-size: 0.78rem; font-weight: 600; }
+    .install-banner-text span { color: var(--oranj); }
+    .install-banner-text small { display: block; font-size: 0.65rem; color: var(--text-mou); font-weight: 400; margin-top: 2px; }
+    .install-btn-yes { background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 8px 14px; font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .install-close { background: none; border: none; color: var(--text-mou); font-size: 1.1rem; cursor: pointer; padding: 4px; }
+    /* BOUTON ENSTALE VIZIB */
+    .app-install-section { background: linear-gradient(135deg, rgba(255,106,0,0.12), rgba(255,106,0,0.04)); border: 1px solid rgba(255,106,0,0.3); border-radius: 20px; padding: 24px 20px; margin: 0 20px 32px; text-align: center; }
+    .app-install-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .app-install-title { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .app-install-title span { color: var(--oranj); }
+    .app-install-desc { font-size: 0.75rem; color: var(--text-mou); margin-bottom: 16px; line-height: 1.5; }
+    .app-install-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 13px 28px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 24px rgba(255,106,0,0.4); transition: transform 0.2s; }
+    .app-install-btn:hover { transform: translateY(-2px); }
+    .app-install-manual { font-size: 0.68rem; color: var(--text-mou); margin-top: 12px; line-height: 1.6; }
+
+    /* LIGHTBOX */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 900; align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 12px; }
+    .lightbox-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.15); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .lightbox-name { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 0.85rem; font-weight: 700; color: white; padding: 0 20px; }
+    .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 0.95rem; font-weight: 700; color: var(--text-med); margin-bottom: 8px; }
+    .empty-state p { font-size: 0.78rem; color: var(--text-mou); font-style: italic; }
+
+    /* ── ADMIN PANEL ── */
+    .admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; align-items: flex-end; justify-content: center; }
+    .admin-overlay.open { display: flex; }
+    .admin-panel { background: var(--nwa2); border-radius: 24px 24px 0 0; border: 1px solid var(--nwa4); border-bottom: none; padding: 24px 20px 40px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+    .admin-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .admin-top h2 { font-size: 1rem; font-weight: 800; }
+    .admin-top h2 span { color: var(--oranj); }
+    .close-btn { background: var(--nwa4); border: none; color: var(--text-med); width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .admin-field { margin-bottom: 14px; }
+    .admin-field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-med); margin-bottom: 6px; }
+    .admin-field input, .admin-field select { width: 100%; background: var(--nwa3); border: 1px solid var(--nwa4); border-radius: 10px; padding: 11px 14px; color: var(--blanc); font-family: 'Poppins', sans-serif; font-size: 0.83rem; outline: none; transition: border-color 0.2s; }
+    .admin-field input:focus, .admin-field select:focus { border-color: var(--oranj); }
+    .admin-field input::placeholder { color: #444; }
+    .admin-field select option { background: var(--nwa2); }
+
+    .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* EMOJI PICKER */
+    .emoji-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 8px; }
+    .emoji-opt { background: var(--nwa3); border: 1px solid var(--nwa4); border-radius: 8px; padding: 8px; text-align: center; font-size: 1.4rem; cursor: pointer; transition: border-color 0.2s; }
+    .emoji-opt:hover, .emoji-opt.selected { border-color: var(--oranj); background: rgba(255,106,0,0.1); }
+
+    /* IMAGE UPLOAD */
+    .img-upload { background: var(--nwa3); border: 2px dashed var(--nwa4); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-top: 8px; }
+    .img-upload:hover { border-color: var(--oranj); }
+    .img-upload input { display: none; }
+    .img-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; margin: 8px auto 0; display: none; }
+    .img-upload-label { font-size: 0.75rem; color: var(--text-mou); margin-top: 6px; display: block; }
+
+    .add-btn { width: 100%; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 14px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 24px rgba(255,106,0,0.4); transition: transform 0.2s; margin-top: 6px; }
+    .add-btn:hover { transform: translateY(-2px); }
+
+    /* ── FÒM KÒMAND ── */
+    .order-section { padding: 32px 20px; background: var(--nwa2); border-top: 1px solid var(--nwa4); border-bottom: 1px solid var(--nwa4); }
+    .order-form { background: var(--nwa3); border-radius: 20px; padding: 24px 20px; border: 1px solid var(--nwa4); }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-med); margin-bottom: 7px; }
+    .form-group label span { color: var(--oranj); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 10px; padding: 12px 14px; color: var(--blanc); font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: border-color 0.2s; appearance: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--oranj); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #444; }
+    .form-group select option { background: var(--nwa2); }
+    .form-group textarea { resize: none; height: 90px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .peman-label { font-size: 0.78rem; font-weight: 600; color: var(--text-med); margin-bottom: 10px; display: block; }
+    .peman-options { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .peman-opt { flex: 1; min-width: 70px; background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 10px; padding: 10px 6px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; user-select: none; }
+    .peman-opt.selected { border-color: var(--oranj); background: rgba(255,106,0,0.08); }
+    .peman-opt .peman-icon { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+    .peman-opt .peman-name { font-size: 0.62rem; font-weight: 600; color: var(--text-med); }
+    .submit-btn { width: 100%; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 15px; font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 24px rgba(255,106,0,0.4); transition: transform 0.2s; margin-top: 8px; }
+    .submit-btn:hover { transform: translateY(-2px); }
+    .success-msg { display: none; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 14px; padding: 20px; text-align: center; margin-top: 16px; }
+    .success-msg.show { display: block; }
+    .success-msg .s-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .success-msg h3 { font-size: 0.95rem; font-weight: 700; color: #4ade80; margin-bottom: 6px; }
+    .success-msg p { font-size: 0.78rem; color: var(--text-mou); }
+
+    /* FEATURES */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px; margin-bottom: 32px; }
+    .feat-card { background: var(--nwa2); border-radius: 14px; padding: 18px 14px; text-align: center; border: 1px solid var(--nwa4); }
+    .feat-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .feat-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 2px; }
+    .feat-title-fr { font-size: 0.65rem; color: var(--text-mou); font-style: italic; margin-bottom: 4px; }
+    .feat-desc { font-size: 0.7rem; color: var(--text-mou); line-height: 1.4; }
+
+    footer { background: var(--nwa2); border-top: 1px solid var(--nwa4); padding: 28px 20px; text-align: center; }
+    .footer-logo { font-size: 1.3rem; font-weight: 900; margin-bottom: 4px; }
+    .footer-logo span { color: var(--oranj); }
+    .footer-slogan { font-size: 0.75rem; color: var(--text-mou); margin-bottom: 4px; }
+    .footer-slogan-fr { font-size: 0.7rem; color: #444; font-style: italic; margin-bottom: 18px; }
+    .footer-links { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+    .footer-links a { color: var(--text-mou); font-size: 0.75rem; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--oranj); }
+    .footer-copy { font-size: 0.68rem; color: #333; border-top: 1px solid var(--nwa4); padding-top: 16px; }
+
+    .wa-float { position: fixed; bottom: 20px; right: 20px; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 20px rgba(37,211,102,0.5); text-decoration: none; z-index: 200; animation: wpulse 2s infinite; transition: transform 0.2s; }
+    .wa-float:hover { transform: scale(1.1); animation: none; }
+    @keyframes wpulse { 0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.5); } 50% { box-shadow: 0 4px 32px rgba(37,211,102,0.8); } }
+
+    /* LOGIN */
+    .login-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
+    .login-overlay.open { display: flex; }
+    .login-box { background: var(--nwa2); border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 340px; border: 1px solid var(--nwa4); text-align: center; }
+    .login-box h2 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .login-box p { font-size: 0.75rem; color: var(--text-mou); margin-bottom: 20px; }
+    .login-input { width: 100%; background: var(--nwa3); border: 1px solid var(--nwa4); border-radius: 10px; padding: 12px 14px; color: var(--blanc); font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; text-align: center; letter-spacing: 4px; margin-bottom: 14px; }
+    .login-input:focus { border-color: var(--oranj); }
+    .login-btn { width: 100%; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 13px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 800; cursor: pointer; }
+    .login-err { font-size: 0.75rem; color: #ef4444; margin-top: 10px; display: none; }
+
+    /* ADMIN MODE indicator */
+    .admin-mode-bar { display: none; background: rgba(255,106,0,0.15); border-bottom: 1px solid rgba(255,106,0,0.3); padding: 8px 20px; text-align: center; font-size: 0.72rem; color: var(--oranj); font-weight: 600; }
+    .admin-mode-bar.show { display: block; }
+
+    /* STATS PAGE */
+    .stats-overlay { display: none; position: fixed; inset: 0; background: var(--nwa); z-index: 700; overflow-y: auto; }
+    .stats-overlay.open { display: block; }
+    .stats-page { padding: 20px; max-width: 480px; margin: 0 auto; }
+    .stats-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-top: 10px; }
+    .stats-back { background: var(--nwa3); border: 1px solid var(--nwa4); color: var(--blanc); width: 38px; height: 38px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .stats-header h2 { font-size: 1.1rem; font-weight: 900; }
+    .stats-header h2 span { color: var(--oranj); }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat-box { background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 16px; padding: 18px 14px; text-align: center; }
+    .stat-box.accent { border-color: var(--oranj); background: rgba(255,106,0,0.08); }
+    .stat-box-num { font-size: 2rem; font-weight: 900; color: var(--oranj); display: block; }
+    .stat-box-label { font-size: 0.68rem; color: var(--text-mou); margin-top: 2px; }
+    .stats-section-title { font-size: 0.85rem; font-weight: 800; margin: 20px 0 12px; }
+    .stats-section-title span { color: var(--oranj); }
+    .cat-stat-row { display: flex; align-items: center; gap: 10px; background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+    .cat-stat-icon { font-size: 1.4rem; }
+    .cat-stat-info { flex: 1; }
+    .cat-stat-name { font-size: 0.8rem; font-weight: 700; }
+    .cat-stat-count { font-size: 0.65rem; color: var(--text-mou); }
+    .cat-stat-bar-wrap { width: 70px; background: var(--nwa4); border-radius: 50px; height: 6px; }
+    .cat-stat-bar { background: var(--oranj); border-radius: 50px; height: 6px; transition: width 0.5s; }
+    .prod-stat-row { display: flex; align-items: center; gap: 10px; background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+    .prod-stat-rank { font-size: 1.1rem; font-weight: 900; color: var(--oranj); width: 24px; }
+    .prod-stat-info { flex: 1; }
+    .prod-stat-name { font-size: 0.8rem; font-weight: 700; }
+    .prod-stat-price { font-size: 0.68rem; color: var(--oranj); font-weight: 700; }
+    .prod-stat-badge { font-size: 0.58rem; background: rgba(255,106,0,0.15); color: var(--oranj); border-radius: 50px; padding: 2px 8px; font-weight: 700; }
+    .notif-section { background: var(--nwa2); border: 1px solid var(--nwa4); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+    .notif-section h3 { font-size: 0.85rem; font-weight: 800; margin-bottom: 4px; }
+    .notif-section p { font-size: 0.72rem; color: var(--text-mou); margin-bottom: 14px; }
+    .notif-input { width: 100%; background: var(--nwa3); border: 1px solid var(--nwa4); border-radius: 10px; padding: 10px 14px; color: var(--blanc); font-family: 'Poppins', sans-serif; font-size: 0.8rem; outline: none; margin-bottom: 10px; }
+    .notif-input:focus { border-color: var(--oranj); }
+    .notif-btn { width: 100%; background: var(--oranj); color: white; border: none; border-radius: 50px; padding: 11px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
+    .notif-status { font-size: 0.72rem; margin-top: 8px; text-align: center; color: #4ade80; display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="flash-banner">🔥 FLASH SALE — Jiska 50% rabè · Jusqu'à 50% de réduction!</div>
+
+  <!-- ADMIN MODE BAR -->
+  <div class="admin-mode-bar" id="adminBar">
+    🔧 Mòd Admin Aktif —
+    <span onclick="ouvrirStats()" style="cursor:pointer;text-decoration:underline;margin-left:8px">📊 Wè Estatistik</span>
+    <span onclick="dekonekte()" style="cursor:pointer;text-decoration:underline;margin-left:12px;color:#ef4444">🚪 Dekonekte</span>
+  </div>
+
+  <!-- STATS PAGE -->
+  <div class="stats-overlay" id="statsOverlay">
+    <div class="stats-page">
+      <div class="stats-header">
+        <button class="stats-back" onclick="fèmenStats()">←</button>
+        <h2>📊 <span>Estatistik</span> Yanou</h2>
+      </div>
+
+      <!-- KAT REZIME -->
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- NOTIFIKASYON ONESIGNAL -->
+      <div class="notif-section">
+        <h3>🔔 Notifikasyon Push</h3>
+        <p>Antre OneSignal App ID ou pou resevwa notifikasyon lè gen kòmand</p>
+        <input class="notif-input" id="onesignalId" placeholder="Ex: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" value=""/>
+        <button class="notif-btn" onclick="soveOneSignal()">💾 Sove &amp; Aktive</button>
+        <div class="notif-status" id="notifStatus">✅ OneSignal aktive!</div>
+      </div>
+
+      <!-- PWODWI PAR KATEGORI -->
+      <div class="stats-section-title">📂 Pwodwi pa <span>Kategori</span></div>
+      <div id="statsByKat"></div>
+
+      <!-- TOP PWODWI -->
+      <div class="stats-section-title">🏆 Top <span>Pwodwi</span></div>
+      <div id="statsTopProd"></div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">Y</div>
+      <div class="logo-text"><span>Y</span>anou</div>
+    </div>
+    <div class="nav-right">
+      <button class="admin-btn" onclick="ouvrirLogin()">⚙️ Admin</button>
+      <a href="#kommande" class="nav-btn">🛒 Kòmande</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">🛍️ Marketplace #1 ann Ayiti</div>
+    <h1><span class="oranj">Yanou,</span><br>nouvo fason<br>pou achte.</h1>
+    <p class="hero-sub">Tout sa ou bezwen, nan men ou.</p>
+    <p class="hero-sub-fr">Tout ce dont vous avez besoin, entre vos mains.</p>
+    <div class="hero-btns">
+      <a href="#kommande" class="btn-orange">🛒 Kòmande Kounya</a>
+      <a href="#produits" class="btn-ghost">Wè Pwodwi yo</a>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-num">1000+</span><span class="stat-label">Kliyan Satisfè</span><span class="stat-label-fr">Clients satisfaits</span></div>
+    <div class="stat"><span class="stat-num">24h</span><span class="stat-label">Livrezon Rapid</span><span class="stat-label-fr">Livraison rapide</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Kalite Garanti</span><span class="stat-label-fr">Qualité garantie</span></div>
+  </div>
+
+  <!-- APP INSTALL SECTION -->
+  <div class="app-install-section" id="appInstallSection">
+    <div class="app-install-icon">📲</div>
+    <div class="app-install-title">Telechaje <span>Yanou App</span></div>
+    <div class="app-install-desc">
+      Enstale Yanou sou telefòn ou gratis!<br>
+      <em>Installez Yanou sur votre téléphone gratuitement!</em>
+    </div>
+    <button class="app-install-btn" id="appInstallBtn" onclick="installeApp()">
+      📲 Enstale App la Gratis
+    </button>
+    <div class="app-install-manual" id="installManual">
+      <strong>Oswa manyèlman:</strong><br>
+      Chrome ⋮ → "Ajouter à l'écran d'accueil"
+    </div>
+  </div>
+
+  <!-- CATEGORIES FILTER -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Tout <span>Kategori</span><small>Toutes les catégories</small></h2>
+    </div>
+    <div class="categories">
+      <div class="cat-card active" onclick="filtreKat('tout')"><span class="cat-icon">🛍️</span><span class="cat-name">Tout / Tout</span></div>
+      <div class="cat-card" onclick="filtreKat('Rad')"><span class="cat-icon">👗</span><span class="cat-name">Rad / Vêtements</span></div>
+      <div class="cat-card" onclick="filtreKat('Tenis')"><span class="cat-icon">👟</span><span class="cat-name">Tenis / Chaussures</span></div>
+      <div class="cat-card" onclick="filtreKat('Sak')"><span class="cat-icon">👜</span><span class="cat-name">Sak / Sacs</span></div>
+      <div class="cat-card" onclick="filtreKat('Bote')"><span class="cat-icon">💄</span><span class="cat-name">Bote / Beauté</span></div>
+      <div class="cat-card" onclick="filtreKat('Gadgets')"><span class="cat-icon">📱</span><span class="cat-name">Gadgets</span></div>
+      <div class="cat-card" onclick="filtreKat('Kay')"><span class="cat-icon">🏠</span><span class="cat-name">Kay / Maison</span></div>
+      <div class="cat-card" onclick="filtreKat('Bijou')"><span class="cat-icon">⌚</span><span class="cat-name">Bijou / Bijoux</span></div>
+    </div>
+  </section>
+
+  <!-- PRODUITS -->
+  <section class="section" id="produits" style="padding-top:0">
+    <div class="section-head">
+      <h2>Pwodwi <span>Nou yo</span><small>Nos produits</small></h2>
+    </div>
+    <div class="products-grid" id="produitsGrid"></div>
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🛍️</div>
+      <h3>Pa gen pwodwi pou lè a · Aucun produit pour l'instant</h3>
+      <p>Klike sou ⚙️ Admin pou ajoute pwodwi ou yo<br>Cliquez sur ⚙️ Admin pour ajouter vos produits</p>
+    </div>
+  </section>
+
+  <!-- FÒM KÒMAND -->
+  <section class="order-section" id="kommande">
+    <div class="section-head">
+      <h2>📦 Fè yon <span>Kòmand</span><small>Passer une commande</small></h2>
+    </div>
+    <div class="order-form">
+      <div class="form-group">
+        <label>👤 Non Konplè / Nom complet <span>*</span></label>
+        <input type="text" id="nom" placeholder="Ex: Marie Joseph"/>
+      </div>
+      <div class="form-group">
+        <label>📱 Nimewo Telefòn / Téléphone <span>*</span></label>
+        <input type="tel" id="telefon" placeholder="Ex: 33548496"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>🏙️ Vil / Ville <span>*</span></label>
+          <select id="vil">
+            <option value="">Chwazi...</option>
+            <option>Pòtoprens</option>
+            <option>Pétion-Ville</option>
+            <option>Cap-Haïtien</option>
+            <option>Gonaïves</option>
+            <option>Les Cayes</option>
+            <option>Jacmel</option>
+            <option>Saint-Marc</option>
+            <option>Lòt vil</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>📍 Katye / Quartier</label>
+          <input type="text" id="adres" placeholder="Ex: Delmas 33"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>🛍️ Pwodwi ou vle / Produit désiré <span>*</span></label>
+        <textarea id="pwodwi" placeholder="Non pwodwi, koulè, gwosè, kantite..."></textarea>
+      </div>
+      <span class="peman-label">💳 Mòd Peman <span style="color:var(--oranj)">*</span></span>
+      <div class="peman-options">
+        <div class="peman-opt" onclick="selectPeman(this,'MonCash')"><span class="peman-icon">📲</span><span class="peman-name">MonCash</span></div>
+        <div class="peman-opt" onclick="selectPeman(this,'NatCash')"><span class="peman-icon">💚</span><span class="peman-name">NatCash</span></div>
+        <div class="peman-opt" onclick="selectPeman(this,'Kach')"><span class="peman-icon">💵</span><span class="peman-name">Kach</span></div>
+        <div class="peman-opt" onclick="selectPeman(this,'Kat Bank')"><span class="peman-icon">💳</span><span class="peman-name">Kat Bank</span></div>
+      </div>
+      <div class="form-group">
+        <label>📝 Nòt Siplemantè / Note</label>
+        <input type="text" id="nòt" placeholder="Nenpòt lòt enfòmasyon..."/>
+      </div>
+      <button class="submit-btn" onclick="soumèt()">🛒 Voye Kòmand lan · Envoyer</button>
+      <div class="success-msg" id="successMsg">
+        <div class="s-icon">✅</div>
+        <h3>Kòmand ou resevwa! · Commande reçue!</h3>
+        <p>Nou pral kontakte ou nan kèk minit sou WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <div class="features" style="margin-top:32px;">
+    <div class="feat-card"><div class="feat-icon">🚚</div><div class="feat-title">Livrezon Rapid</div><div class="feat-title-fr">Livraison rapide</div><div class="feat-desc">24-48h nan tout peyi a</div></div>
+    <div class="feat-card"><div class="feat-icon">🔒</div><div class="feat-title">Peman Sekirite</div><div class="feat-title-fr">Paiement sécurisé</div><div class="feat-desc">MonCash, NatCash, Kat Bank</div></div>
+    <div class="feat-card"><div class="feat-icon">💯</div><div class="feat-title">Pi Bon Pri</div><div class="feat-title-fr">Meilleurs prix</div><div class="feat-desc">Kalite bon, pri ba</div></div>
+    <div class="feat-card"><div class="feat-icon">💬</div><div class="feat-title">Sipò 24/7</div><div class="feat-title-fr">Support 24/7</div><div class="feat-desc">Nou la pou ede w tout tan</div></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo"><span>Y</span>anou</div>
+    <div class="footer-slogan">Tout sa ou bezwen, nan men ou.</div>
+    <div class="footer-slogan-fr">Tout ce dont vous avez besoin, entre vos mains.</div>
+    <div class="footer-links">
+      <a href="#kommande">Kòmande</a>
+      <a href="https://wa.me/50933548496">WhatsApp</a>
+      <a href="#produits">Pwodwi</a>
+    </div>
+    <div class="footer-copy">© 2026 Yanou Haiti 🇭🇹 — Tout dwa rezève</div>
+  </footer>
+
+  <a href="https://wa.me/50933548496" class="wa-float">💬</a>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="fèmenLightbox()">
+    <button class="lightbox-close" onclick="fèmenLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt=""/>
+    <div class="lightbox-name" id="lightboxName"></div>
+  </div>
+
+  <!-- INSTALL BANNER -->
+  <div class="install-banner" id="installBanner">
+    <div style="font-size:2rem">📲</div>
+    <div class="install-banner-text">
+      <span>Enstale Yanou</span> sou telefòn ou!
+      <small>Travay san entènèt · Rapid tankou yon app</small>
+    </div>
+    <button class="install-btn-yes" id="installYes">Enstale</button>
+    <button class="install-close" id="installNo">✕</button>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <h2>🔐 Aksè <span style="color:var(--oranj)">Admin</span></h2>
+      <p>Antre modpas ou pou jere pwodwi yo<br><small style="color:#444">Entrez votre mot de passe admin</small></p>
+      <input class="login-input" type="password" id="mdpInput" placeholder="••••••" onkeydown="if(event.key==='Enter')verifeMdp()"/>
+      <button class="login-btn" onclick="verifeMdp()">Konekte · Connexion</button>
+      <div class="login-err" id="loginErr">❌ Modpas la pa kòrèk · Mot de passe incorrect</div>
+      <p style="font-size:0.68rem;color:#333;margin-top:14px;">Klike deyò pou fèmen · Cliquez dehors pour fermer</p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <div class="admin-top">
+        <h2>➕ Ajoute <span>Pwodwi</span></h2>
+        <button class="close-btn" onclick="fermeAdmin()">✕</button>
+      </div>
+
+      <!-- NOM PWODWI -->
+      <div class="admin-field">
+        <label>📝 Non Pwodwi / Nom du produit</label>
+        <input type="text" id="aNom" placeholder="Ex: Tenis Air Max 270"/>
+      </div>
+
+      <!-- KATEGORI -->
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>📂 Kategori</label>
+          <select id="aKat">
+            <option value="Rad">👗 Rad</option>
+            <option value="Tenis">👟 Tenis</option>
+            <option value="Sak">👜 Sak</option>
+            <option value="Bote">💄 Bote</option>
+            <option value="Gadgets">📱 Gadgets</option>
+            <option value="Kay">🏠 Kay</option>
+            <option value="Bijou">⌚ Bijou</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label>🏷️ Badge (opsyonèl)</label>
+          <input type="text" id="aBadge" placeholder="Ex: HOT 🔥 / NEW / -50%"/>
+        </div>
+      </div>
+
+      <!-- PRI -->
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>💰 Pri / Prix ($)</label>
+          <input type="number" id="aPri" placeholder="Ex: 25"/>
+        </div>
+        <div class="admin-field">
+          <label>🔻 Ansyen Pri (opsyonèl)</label>
+          <input type="number" id="aAnsyen" placeholder="Ex: 50"/>
+        </div>
+      </div>
+
+      <!-- EMOJI OU FOTO -->
+      <div class="admin-field">
+        <label>🖼️ Imaj — Chwazi yon emoji oswa telechaje foto</label>
+        <div class="emoji-grid" id="emojiGrid">
+          <div class="emoji-opt selected" onclick="chwazi('👟')">👟</div>
+          <div class="emoji-opt" onclick="chwazi('👗')">👗</div>
+          <div class="emoji-opt" onclick="chwazi('👜')">👜</div>
+          <div class="emoji-opt" onclick="chwazi('💄')">💄</div>
+          <div class="emoji-opt" onclick="chwazi('📱')">📱</div>
+          <div class="emoji-opt" onclick="chwazi('⌚')">⌚</div>
+          <div class="emoji-opt" onclick="chwazi('🏠')">🏠</div>
+          <div class="emoji-opt" onclick="chwazi('🎁')">🎁</div>
+          <div class="emoji-opt" onclick="chwazi('👒')">👒</div>
+          <div class="emoji-opt" onclick="chwazi('🕶️')">🕶️</div>
+          <div class="emoji-opt" onclick="chwazi('💍')">💍</div>
+          <div class="emoji-opt" onclick="chwazi('🧴')">🧴</div>
+        </div>
+        <!-- FOTO UPLOAD -->
+        <div class="img-upload" onclick="document.getElementById('fotoInput').click()" style="margin-top:10px;">
+          <input type="file" id="fotoInput" accept="image/*" onchange="prevyeFoto(this)"/>
+          <span style="font-size:1.5rem">📸</span>
+          <span class="img-upload-label">Oswa telechaje foto · Ou télécharger une photo</span>
+          <img id="imgPreview" class="img-preview" src="" alt=""/>
+        </div>
+      </div>
+
+      <button class="add-btn" onclick="ajoutePwodwi()">✅ Ajoute Pwodwi a · Ajouter</button>
+    </div>
+  </div>
+
+  <script>
+    // ── SERVICE WORKER (PWA oflayn) ──
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE = 'yanou-v1';
+        const ASSETS = [location.href];
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', e => {
+          e.waitUntil(caches.keys().then(keys =>
+            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+          ));
+          self.clients.claim();
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            fetch(e.request).catch(() => caches.match(e.request))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], {type: 'application/javascript'});
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(() => {});
+    }
+
+    // ── PWA INSTALL ──
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setTimeout(() => document.getElementById('installBanner').classList.add('show'), 3000);
+      // Montre bouton dirèk
+      document.getElementById('appInstallBtn').style.background = 'var(--oranj)';
+      document.getElementById('installManual').style.display = 'none';
+    });
+
+    async function installeApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === 'accepted') {
+          document.getElementById('appInstallSection').innerHTML = `
+            <div style="font-size:2.5rem">✅</div>
+            <div style="font-size:0.95rem;font-weight:800;margin-top:10px">Yanou enstale! <span style="color:var(--oranj)">Mèsi!</span></div>
+            <div style="font-size:0.75rem;color:var(--text-mou);margin-top:6px">Wè ikonn oranj sou ekran ou 🧡</div>
+          `;
+        }
+      } else {
+        // Si pa gen prompt, montre enstriksyon manyèl
+        alert('📲 Pou enstale Yanou:\n\n1. Klike ⋮ (3 pwen) anlè dwat\n2. Chwazi "Ajouter à l\'écran d\'accueil"\n3. Klike "Ajouter" ✅');
+      }
+    }
+
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+
+    document.getElementById('installYes').addEventListener('click', async () => {
+      document.getElementById('installBanner').classList.remove('show');
+      installeApp();
+    });
+    document.getElementById('installNo').addEventListener('click', () => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+
+    // ── MODPAS ADMIN ──
+    const ADMIN_PWD = 'yanou2026';
+    let isAdmin = false;
+    let emojiChwazi = '👟';
+    let fotoData = null;
+    let pemanChwazi = '';
+    let filtreCourant = 'tout';
+
+    // Chaje pwodwi depi localStorage
+    let produits = JSON.parse(localStorage.getItem('yanou_produits') || '[]');
+
+    function sove() {
+      localStorage.setItem('yanou_produits', JSON.stringify(produits));
+    }
+
+    // ── LOGIN ──
+    function ouvrirLogin() {
+      if (isAdmin) { ouvrirAdmin(); return; }
+      document.getElementById('loginOverlay').classList.add('open');
+      setTimeout(() => document.getElementById('mdpInput').focus(), 200);
+    }
+    document.getElementById('loginOverlay').addEventListener('click', function(e) {
+      if (e.target === this) fermeLogin();
+    });
+    function fermeLogin() {
+      document.getElementById('loginOverlay').classList.remove('open');
+      document.getElementById('mdpInput').value = '';
+      document.getElementById('loginErr').style.display = 'none';
+    }
+    function verifeMdp() {
+      const v = document.getElementById('mdpInput').value;
+      if (v === ADMIN_PWD) {
+        fermeLogin();
+        isAdmin = true;
+        document.getElementById('adminBar').classList.add('show');
+        aficheProduits();
+        ouvrirAdmin();
+      } else {
+        document.getElementById('loginErr').style.display = 'block';
+      }
+    }
+
+    // ── DEKONEKTE ──
+    function dekonekte() {
+      if (!confirm('Ou vle dekonekte kòm Admin?')) return;
+      isAdmin = false;
+      document.getElementById('adminBar').classList.remove('show');
+      fèmenStats();
+      aficheProduits();
+    }
+
+    // ── ONESIGNAL ──
+    function soveOneSignal() {
+      const id = document.getElementById('onesignalId').value.trim();
+      if (!id) { alert('⚠️ Antre OneSignal App ID ou!'); return; }
+      localStorage.setItem('yanou_onesignal', id);
+      document.getElementById('notifStatus').style.display = 'block';
+      setTimeout(() => document.getElementById('notifStatus').style.display = 'none', 3000);
+      // Chaje script OneSignal
+      charjeOneSignal(id);
+    }
+
+    function charjeOneSignal(appId) {
+      if (!appId) return;
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      const s = document.createElement('script');
+      s.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
+      s.defer = true;
+      document.head.appendChild(s);
+      window.OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({ appId: appId, notifyButton: { enable: false } });
+      });
+    }
+
+    // ── PWOUVE ONESIGNAL SI DEJA SOVE ──
+    const savedOSId = localStorage.getItem('yanou_onesignal');
+    if (savedOSId) {
+      document.getElementById('onesignalId').value = savedOSId;
+      charjeOneSignal(savedOSId);
+    }
+
+    // ── ESTATISTIK ──
+    const KATICONS = { Rad:'👗', Tenis:'👟', Sak:'👜', Bote:'💄', Gadgets:'📱', Kay:'🏠', Bijou:'⌚' };
+
+    function ouvrirStats() {
+      kalkilStats();
+      document.getElementById('statsOverlay').classList.add('open');
+    }
+    function fèmenStats() {
+      document.getElementById('statsOverlay').classList.remove('open');
+    }
+
+    function kalkilStats() {
+      const total = produits.length;
+      const aktif = produits.filter(p => !p.fini).length;
+      const fini = produits.filter(p => p.fini).length;
+      const valè = produits.reduce((s, p) => s + (p.fini ? 0 : p.pri), 0);
+
+      // Kat rezime
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-box accent"><span class="stat-box-num">${total}</span><span class="stat-box-label">Total Pwodwi</span></div>
+        <div class="stat-box"><span class="stat-box-num" style="color:#4ade80">${aktif}</span><span class="stat-box-label">✅ Disponib</span></div>
+        <div class="stat-box"><span class="stat-box-num" style="color:#ef4444">${fini}</span><span class="stat-box-label">❌ Sold Out</span></div>
+        <div class="stat-box"><span class="stat-box-num">$${valè.toFixed(0)}</span><span class="stat-box-label">Valè Total</span></div>
+      `;
+
+      // Pa kategori
+      const byKat = {};
+      produits.forEach(p => { byKat[p.kat] = (byKat[p.kat] || 0) + 1; });
+      const maxKat = Math.max(...Object.values(byKat), 1);
+      document.getElementById('statsByKat').innerHTML = Object.entries(byKat)
+        .sort((a,b) => b[1]-a[1])
+        .map(([kat, cnt]) => `
+          <div class="cat-stat-row">
+            <span class="cat-stat-icon">${KATICONS[kat]||'📦'}</span>
+            <div class="cat-stat-info">
+              <div class="cat-stat-name">${kat}</div>
+              <div class="cat-stat-count">${cnt} pwodwi</div>
+            </div>
+            <div class="cat-stat-bar-wrap">
+              <div class="cat-stat-bar" style="width:${Math.round(cnt/maxKat*100)}%"></div>
+            </div>
+          </div>
+        `).join('') || '<p style="color:var(--text-mou);font-size:0.78rem">Pa gen pwodwi ankò</p>';
+
+      // Top pwodwi (pa pri)
+      const top = [...produits].sort((a,b) => b.pri - a.pri).slice(0, 5);
+      document.getElementById('statsTopProd').innerHTML = top.map((p, i) => `
+        <div class="prod-stat-row">
+          <span class="prod-stat-rank">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span>
+          <div class="prod-stat-info">
+            <div class="prod-stat-name">${p.nom}</div>
+            <div class="prod-stat-price">$${p.pri}</div>
+          </div>
+          ${p.fini ? '<span class="prod-stat-badge">SOLD OUT</span>' : '<span class="prod-stat-badge" style="background:rgba(74,222,128,0.15);color:#4ade80">Disponib</span>'}
+        </div>
+      `).join('') || '<p style="color:var(--text-mou);font-size:0.78rem">Pa gen pwodwi ankò</p>';
+    }
+
+    // ── ADMIN PANEL ──
+    function ouvrirAdmin() {
+      document.getElementById('adminOverlay').classList.add('open');
+    }
+    function fermeAdmin() {
+      document.getElementById('adminOverlay').classList.remove('open');
+    }
+    document.getElementById('adminOverlay').addEventListener('click', function(e) {
+      if (e.target === this) fermeAdmin();
+    });
+
+    // ── EMOJI ──
+    function chwazi(emoji) {
+      emojiChwazi = emoji;
+      fotoData = null;
+      document.getElementById('imgPreview').style.display = 'none';
+      document.getElementById('fotoInput').value = '';
+      document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+
+    // ── FOTO ──
+    function prevyeFoto(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        fotoData = e.target.result;
+        document.getElementById('imgPreview').src = fotoData;
+        document.getElementById('imgPreview').style.display = 'block';
+        document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ── AJOUTE PWODWI ──
+    function ajoutePwodwi() {
+      const nom = document.getElementById('aNom').value.trim();
+      const pri = document.getElementById('aPri').value.trim();
+      if (!nom || !pri) { alert('⚠️ Non ak pri yo obligatwa!'); return; }
+
+      const p = {
+        id: Date.now(),
+        nom,
+        kat: document.getElementById('aKat').value,
+        badge: document.getElementById('aBadge').value.trim(),
+        pri: parseFloat(pri),
+        ansyen: parseFloat(document.getElementById('aAnsyen').value) || null,
+        emoji: fotoData ? null : emojiChwazi,
+        foto: fotoData || null,
+      };
+      produits.push(p);
+      sove();
+      aficheProduits();
+      fermeAdmin();
+
+      // Reset
+      document.getElementById('aNom').value = '';
+      document.getElementById('aPri').value = '';
+      document.getElementById('aAnsyen').value = '';
+      document.getElementById('aBadge').value = '';
+      fotoData = null;
+      document.getElementById('imgPreview').style.display = 'none';
+      emojiChwazi = '👟';
+      document.querySelectorAll('.emoji-opt').forEach((e,i) => e.classList.toggle('selected', i===0));
+    }
+
+    // ── LIGHTBOX ──
+    function ouvrirLightbox(src, nom) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxName').textContent = nom;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function fèmenLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    // ── EFASE PWODWI ──
+    function efasePwodwi(id) {
+      if (!confirm('Ou vle retire pwodwi sa a pou toujou?\nVoulez-vous supprimer définitivement?')) return;
+      produits = produits.filter(p => p.id !== id);
+      sove();
+      aficheProduits();
+    }
+
+    // ── MAK KÒM FINI / AKTIF ──
+    function toggleFini(id) {
+      const p = produits.find(p => p.id === id);
+      if (!p) return;
+      if (p.fini) {
+        // Renmèt li aktif
+        p.fini = false;
+        p.badge = p._oldBadge || p.badge || '';
+      } else {
+        // Mak kòm fini
+        p._oldBadge = p.badge;
+        p.fini = true;
+      }
+      sove();
+      aficheProduits();
+    }
+
+    // ── FILTRE ──
+    function filtreKat(kat) {
+      filtreCourant = kat;
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      aficheProduits();
+    }
+
+    // ── AFICHE PWODWI ──
+    function aficheProduits() {
+      const grid = document.getElementById('produitsGrid');
+      const empty = document.getElementById('emptyState');
+      const liste = filtreCourant === 'tout' ? produits : produits.filter(p => p.kat === filtreCourant);
+
+      if (liste.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      grid.innerHTML = liste.map(p => `
+        <div class="prod-card${p.fini ? ' fini' : ''}" data-id="${p.id}">
+          <div class="prod-img">
+            ${p.foto ? `<img src="${p.foto}" alt="${p.nom}" style="cursor:zoom-in" onclick="ouvrirLightbox('${p.foto}', '${p.nom}')"/>` : p.emoji}
+            ${p.badge && !p.fini ? `<span class="prod-badge">${p.badge}</span>` : ''}
+            ${p.fini ? `<div class="sold-out-overlay"><span class="sold-out-tag">SOLD OUT</span></div>` : ''}
+            ${isAdmin ? `
+              <button class="prod-soldout-btn" style="display:flex;${p.fini?'background:rgba(34,197,94,0.9);':''}" onclick="toggleFini(${p.id})">
+                ${p.fini ? '✅ Aktif' : '⚠️ Fini'}
+              </button>
+              <button class="prod-delete" style="display:flex" onclick="efasePwodwi(${p.id})">🗑️</button>
+            ` : ''}
+          </div>
+          <div class="prod-info">
+            <div class="prod-name">${p.nom}${p.fini ? ' <span style="color:#ef4444;font-size:0.65rem">(Fini)</span>' : ''}</div>
+            <div class="prod-cat">${p.kat}</div>
+            <div class="prod-price">$${p.pri}${p.ansyen ? `<span class="prod-price-old">$${p.ansyen}</span>` : ''}</div>
+          </div>
+          <button class="prod-btn" onclick="${p.fini ? '' : `kòmandeAk('${p.nom}', ${p.pri})`}" ${p.fini ? 'disabled style="background:#333;cursor:not-allowed"' : ''}>
+            ${p.fini ? '❌ Pa Disponib' : '🛒 Kòmande'}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // ── KÒMANDE AK PWODWI ──
+    function kòmandeAk(nom, pri) {
+      document.getElementById('pwodwi').value = `${nom} — $${pri}`;
+      document.getElementById('kommande').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ── FÒM KÒMAND ──
+    function selectPeman(el, val) {
+      document.querySelectorAll('.peman-opt').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      pemanChwazi = val;
+    }
+
+    function soumèt() {
+      const nom = document.getElementById('nom').value.trim();
+      const tel = document.getElementById('telefon').value.trim();
+      const vil = document.getElementById('vil').value;
+      const pwodwi = document.getElementById('pwodwi').value.trim();
+      const adres = document.getElementById('adres').value.trim();
+      const nòt = document.getElementById('nòt').value.trim();
+      if (!nom || !tel || !vil || !pwodwi || !pemanChwazi) {
+        alert('⚠️ Tanpri ranpli tout chan obligatwa yo (*).');
+        return;
+      }
+      const msg = `🛍️ *NOUVO KÒMAND — YANOU*\n━━━━━━━━━━━━━━━\n👤 *Non:* ${nom}\n📱 *Telefòn:* ${tel}\n🏙️ *Vil:* ${vil}${adres ? ` — ${adres}` : ''}\n━━━━━━━━━━━━━━━\n🛒 *Pwodwi:*\n${pwodwi}\n━━━━━━━━━━━━━━━\n💳 *Peman:* ${pemanChwazi}${nòt ? `\n📝 *Nòt:* ${nòt}` : ''}\n━━━━━━━━━━━━━━━`;
+      window.open(`https://wa.me/50933548496?text=${encodeURIComponent(msg)}`, '_blank');
+      document.getElementById('successMsg').classList.add('show');
+    }
+
+    // Init
+    aficheProduits();
+  </script>
+</body>
+</html>
